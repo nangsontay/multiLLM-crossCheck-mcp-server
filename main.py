@@ -55,6 +55,18 @@ async def cross_check(prompt):
             "url": f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={os.getenv('GEMINI_API_KEY')}",
             "key": os.getenv("GEMINI_API_KEY"),
         },
+        {
+            "name": "GLM",
+            "url": "https://api.z.ai/api/paas/v4/",
+            "key": os.getenv("GLM_API_KEY"),
+            "model": "glm-4.6",
+        },
+        {
+            "name": "GLMV",
+            "url": "https://api.z.ai/api/paas/v4/",
+            "key": os.getenv("GLM_API_KEY"),
+            "model": "glm-4.5v",
+        },
     ]
 
     tasks = [query_llm(prompt, l.get("url"), l.get("key"), l.get("model")) for l in llms if l.get("key")]
