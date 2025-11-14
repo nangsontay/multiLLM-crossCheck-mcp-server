@@ -10,8 +10,9 @@ A Model Control Protocol (MCP) server that allows cross-checking responses from 
   - Anthropic (Claude)
   - Perplexity AI
   - Google (Gemini)
+  - GLM (Z.ai) (Support GLM4.6 and GLM4.5V)
 - Asynchronous parallel processing for faster responses
-- Easy integration with Claude Desktop
+- Easy integration with Claude Desktop / Claude Code
 
 ## Prerequisites
 
@@ -24,8 +25,8 @@ A Model Control Protocol (MCP) server that allows cross-checking responses from 
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/lior-ps/multi-llm-cross-check-mcp-server.git
-cd multi-llm-cross-check-mcp-server
+git clone https://github.com/nangsontay/multiLLM-crossCheck-mcp-server.git
+cd multiLLM-crossCheck-mcp-server
 ```
 
 2. Initialize uv environment and install requirements:
@@ -54,6 +55,7 @@ uv pip install -r requirements.txt
            "ANTHROPIC_API_KEY": "your_anthropic_key",  // Get from https://console.anthropic.com/account/keys
            "PERPLEXITY_API_KEY": "your_perplexity_key",  // Get from https://www.perplexity.ai/settings/api
            "GEMINI_API_KEY": "your_gemini_key"  // Get from https://makersuite.google.com/app/apikey
+           "GLM_API_KEY": "your_Z.ai_key"
          }
        }
      ]
@@ -82,7 +84,9 @@ The server returns a dictionary with responses from each LLM provider:
     "ChatGPT": { ... },
     "Claude": { ... },
     "Perplexity": { ... },
-    "Gemini": { ... }
+    "Gemini": { ... },
+    "GLM4.6": { ... },
+    "GLM4.5V": { ... }
 }
 ```
 
