@@ -56,13 +56,13 @@ async def cross_check(prompt):
             "key": os.getenv("GEMINI_API_KEY"),
         },
         {
-            "name": "GLM",
+            "name": "GLM4.6",
             "url": "https://api.z.ai/api/paas/v4/",
             "key": os.getenv("GLM_API_KEY"),
             "model": "glm-4.6",
         },
         {
-            "name": "GLMV",
+            "name": "GLM4.5V",
             "url": "https://api.z.ai/api/paas/v4/",
             "key": os.getenv("GLM_API_KEY"),
             "model": "glm-4.5v",
