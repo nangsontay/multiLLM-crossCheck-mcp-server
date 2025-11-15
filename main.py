@@ -13,11 +13,12 @@ async def query_llm(prompt, api_url, api_key, model=None):
         headers = {}
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
     try:
-        async with httpx.AsyncClient() as client:
+        # Use 120 second timeout for reasoning models that need more time to think
+        async with httpx.AsyncClient(timeout=120.0) as client:
             response = await client.post(api_url, json=payload, headers=headers)
             return response.json()
     except Exception as e:
-        return {"error": f"Error querying {api_url}: {str(e)}"}
+        return {"error": f"Error querying {api_url}: {type(e).__name__}: {str(e)}"}
 
 
 @mcp.tool()
@@ -57,23 +58,25 @@ async def cross_check(prompt):
         },
         {
             "name": "GLM4.6",
-            "url": "https://api.z.ai/api/paas/v4/",
+            "url": "https://api.z.ai/api/coding/paas/v4/chat/completions",
             "key": os.getenv("GLM_API_KEY"),
             "model": "glm-4.6",
         },
         {
             "name": "GLM4.5V",
-            "url": "https://api.z.ai/api/paas/v4/",
+            "url": "https://api.z.ai/api/coding/paas/v4/chat/completions",
             "key": os.getenv("GLM_API_KEY"),
             "model": "glm-4.5v",
         },
     ]
 
-    tasks = [query_llm(prompt, l.get("url"), l.get("key"), l.get("model")) for l in llms if l.get("key")]
+    # Filter LLMs with API keys and keep track of which ones they are
+    llms_with_keys = [l for l in llms if l.get("key")]
+    tasks = [query_llm(prompt, l.get("url"), l.get("key"), l.get("model")) for l in llms_with_keys]
     responses = await asyncio.gather(*tasks, return_exceptions=True)
     results = {}
     for i, response in enumerate(responses):
-        llm_name = llms[i]["name"]
+        llm_name = llms_with_keys[i]["name"]
         results[llm_name] = response
     return results
 
